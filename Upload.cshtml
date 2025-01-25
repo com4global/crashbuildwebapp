@@ -1,0 +1,36 @@
+﻿@{
+    ViewData["Title"] = "Upload Image";
+}
+
+<h2> please Upload file</h2>
+
+@if (ViewBag.Message != null)
+{
+    <p style="color: red;">@ViewBag.Message</p>
+}
+
+<form asp-action="Upload" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label for="file">Select Image:</label>
+        <input type="file" name="file" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary mt-2">Upload</button>
+</form>
+
+@if (ViewBag.ImageUrl != null)
+{
+    if (ViewBag.ImageUrl.ToString().EndsWith(".pdf", StringComparison.OrdinalIgnoreCase))
+    {
+        <h3>Uploaded File:</h3>
+        <a href="@ViewBag.ImageUrl" target="_blank" download>
+            <button type="button" style="padding: 10px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                View / Download PDF
+            </button>
+        </a>
+    }
+    else
+    {
+        <h3>Uploaded Image:</h3>
+        <img src="@ViewBag.ImageUrl" alt="Uploaded Image" style="max-width: 100%; height: auto;" />
+    }
+}
