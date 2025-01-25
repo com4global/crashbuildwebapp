@@ -1,0 +1,231 @@
+﻿
+
+
+@* <h2>Uploaded Files</h2>
+
+@if (Model != null && Model.Count > 0)
+{
+    <table style="width: 100%; border-collapse: collapse; text-align: left; font-family: Arial, sans-serif; margin-bottom: 20px;">
+        <thead>
+            <tr style="background-color: #007bff; color: white;">
+                <th style="border: 1px solid #ddd; padding: 12px; text-align: center;">File</th>
+                <th style="border: 1px solid #ddd; padding: 12px; text-align: center;">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var fileUrl in Model)
+            {
+                <tr>
+                    <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">
+                        @if (fileUrl.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase))
+                        {
+                            <span>PDF File</span>
+                        }
+                        else
+                        {
+                            <img src="@fileUrl" alt="Image" style="max-width: 100px; height: auto;" />
+                        }
+                    </td>
+                    <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">
+                        <a href="@fileUrl" target="_blank" download>
+                            <button type="button" style="padding: 10px 15px; background-color: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                                View / Download
+                            </button>
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+})
+</div>
+}
+else
+{
+    <p>No files found.</p>
+} *@
+
+@model List<string>
+
+@{
+    ViewData["Title"] = "Image List";
+    int currentPage = ViewBag.CurrentPage ?? 1;
+    int totalPages = ViewBag.TotalPages ?? 1;
+}
+
+<h2>Uploaded Files</h2>
+
+@if (Model != null && Model.Count > 0)
+{
+    <table style="width: 100%; border-collapse: collapse; text-align: left; font-family: Arial, sans-serif; margin-bottom: 20px;">
+        <thead>
+            <tr style="background-color: #007bff; color: white;">
+                <th style="border: 1px solid #ddd; padding: 12px; text-align: center;">File</th>
+                <th style="border: 1px solid #ddd; padding: 12px; text-align: center;">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var fileUrl in Model)
+            {
+                <tr>
+                    <!-- File Display -->
+                    <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">
+                        @if (fileUrl.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase))
+                        {
+                            <span>PDF File</span>
+                        }
+                        else
+                        {
+                            <img src="@fileUrl" alt="Image" style="max-width: 100px; height: auto;" />
+                        }
+                    </td>
+
+                    <!-- Action Buttons -->
+                    <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">
+                        <!-- View Button: Opens in a new tab -->
+                        <a href="@fileUrl" target="_blank">
+                            <button type="button" style="padding: 10px 15px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                                View
+                            </button>
+                        </a>
+
+                        <!-- Download Button: Forces download -->
+                        <a href="@fileUrl" download>
+                            <button type="button" style="padding: 10px 15px; background-color: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                                Download
+                            </button>
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+    <!-- Pagination Links -->
+    <div style="text-align: center; margin-top: 20px;">
+        <!-- First Page -->
+        @if (ViewBag.CurrentPage > 1)
+        {
+            <a href="@Url.Action("List", new { page = 1 })" class="btn btn-primary">
+                &#xab; First
+            </a>
+        }
+
+        <!-- Previous Page -->
+        @if (ViewBag.CurrentPage > 1)
+        {
+            <a href="@Url.Action("List", new { page = ViewBag.CurrentPage - 1 })" class="btn btn-primary">
+                &#x276E; Previous
+            </a>
+        }
+
+        <!-- Page Numbers -->
+        @for (int i = 1; i <= ViewBag.TotalPages; i++)
+        {
+            if (i == ViewBag.CurrentPage)
+            {
+                <span class="btn btn-secondary">@i</span>
+            }
+            else
+            {
+                <a href="@Url.Action("List", new { page = i })" class="btn btn-outline-primary">@i</a>
+            }
+        }
+
+        <!-- Next Page -->
+        @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+        {
+            <a href="@Url.Action("List", new { page = ViewBag.CurrentPage + 1 })" class="btn btn-primary">
+                Next &#x276F;
+            </a>
+        }
+
+        <!-- Last Page -->
+        @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+        {
+            <a href="@Url.Action("List", new { page = ViewBag.TotalPages })" class="btn btn-primary">
+                Last &#xbb;
+            </a>
+        }
+    </div>
+}
+else
+{
+    <p>No files found.</p>
+}
+
+
+
+
+@* @model IPagedList<string>
+
+@{
+    ViewData["Title"] = "Image List";
+}
+
+<h2>Uploaded Files</h2>
+
+@if (Model != null && Model.Count > 0)
+{
+    <table style="width: 100%; border-collapse: collapse; text-align: left; font-family: Arial, sans-serif; margin-bottom: 20px;">
+        <thead>
+            <tr style="background-color: #007bff; color: white;">
+                <th style="border: 1px solid #ddd; padding: 12px; text-align: center;">File</th>
+                <th style="border: 1px solid #ddd; padding: 12px; text-align: center;">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var fileUrl in Model)
+            {
+                <tr>
+                    <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">
+                        @if (fileUrl.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase))
+                        {
+                            <span>PDF File</span>
+                        }
+                        else
+                        {
+                            <img src="@fileUrl" alt="Image" style="max-width: 100px; height: auto;" />
+                        }
+                    </td>
+                    <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">
+                        <a href="@fileUrl" target="_blank" download>
+                            <button type="button" style="padding: 10px 15px; background-color: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                                View / Download
+                            </button>
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <!-- Pagination Links -->
+    <div style="text-align: center; margin-top: 20px;">
+        @Html.PagedListPager(Model, page => Url.Action("List", new { page = page }), new PagedListRenderOptions
+{
+    DisplayLinkToFirstPage = true,
+    DisplayLinkToLastPage = true,
+    DisplayLinkToPreviousPage = true,
+    DisplayLinkToNextPage = true,
+    DisplayPageCountAndCurrentLocation = false,
+    MaximumPageNumbersToDisplay = 5,
+    DisplayEllipsesWhenNotShowingAllPageNumbers = true,
+    LinkToFirstPageFormat = "<< First",
+    LinkToPreviousPageFormat = "< Prev",
+    LinkToNextPageFormat = "Next >",
+    LinkToLastPageFormat = "Last >>",
+    PageClasses = new[] { "page-link" },
+    UlElementClasses = new[] { "pagination" },
+    LiElementClasses = new[] { "page-item" }
+})
+    </div>
+}
+else
+{
+    <p>No files found.</p>
+}
+ *@
